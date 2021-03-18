@@ -34,6 +34,17 @@ pipeline {
             api.push("latest")
           }
         }
+        echo "Cleanup image"
+        sh 'docker rmi sendykris/qlass-api'
+      }
+    }
+    stage("deploy"){
+      steps{
+        sh "chmod +x changeTag.sh"
+        sh "./changeTag.sh ${DOCKER_TAG}"
+        withKubeConfig([credentialsId: '', serverUrl: 'https://34.101.65.135']){
+          sh 'kubectl apply -f deployment-config.k8s.yaml'
+        }
       }
     }
   }
