@@ -4,7 +4,6 @@ pipeline {
       image 'node'
     }
   }
-}
   stages{    
     stage ('install dependecies'){
       steps{
@@ -18,3 +17,4 @@ pipeline {
     }
     
   }
+}
