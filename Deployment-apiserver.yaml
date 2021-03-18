@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  name: api-deployment 
+  labels:
+    app: qlass
+    type: api
+  namespace: qlass
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: api
+  template:
+    metadata:
+      labels:
+        app: qlass
+        type: api
+    spec:
+      containers:
+        - name: api-server
+          image: sendykris/qlass-api:0.1
+          env:
+            - name: NQ_DB_HOST
+              value: svc-database
+            - name: NQ_DB_USER
+              value: root 
+            - name: NQ_DB_PASSWORD
+              value: password
+            - name: NQ_DB_NAME
+              value: dbqlas
+          ports:
+            - containerPort: 2017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-api
+  labels:
+    app: qlass
+    type: api
+  namespace: qlass
+spec:
+  type: NodePort
+  selector:
+    type: api
+  ports:
+    - port: 2017
+      targetPort: 2017
+      nodePort: 32017
