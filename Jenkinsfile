@@ -26,5 +26,20 @@ pipeline {
         sh "docker stop testapi"
       }
     }
+    stage('push image'){
+      steps{
+        script{
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub.sendykris')
+            api.push("${DOCKER_TAG}")
+            api.push("latest")
+          }
+        }
+      }
+    }
   }
+}
+
+def getDockerTag(){
+  def tag = sh script: "git rev-parse HEAD", returnStdout: true
+  return tag
 }
