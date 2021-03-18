@@ -19,7 +19,7 @@ pipeline {
           api = docker.build("sendykris/qlass-api")
         }
         echo "run container for test image"
-        sh "docker run -d --rum --name testapi -p 8081:2017 sendykris/qlass-api"
+        sh "docker run -d --rm --name testapi -p 8081:2017 sendykris/qlass-api"
         input message: "Finished test image? (click proceed to continue)"
         
         echo "cleanup container testapi"
