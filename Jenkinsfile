@@ -47,14 +47,14 @@ pipeline{
     }
     stage ('cleanup images'){
       steps{
-        sh 'docker rmi yosafatdeny/nodeapp'
+        sh 'docker rmi sendykris/nodeapp'
       }
     }
     stage ('deploy app'){
       steps{
         sh "chmod +x changeTag.sh"
         sh "./changeTag.sh ${DOCKER_TAG}"
-        withKubeConfig([credentialsId: 'kubeconfig-clusterjcde', serverUrl: 'https://34.101.189.159']){
+        withKubeConfig([credentialsId: 'kubeconfig-clusterjcde', serverUrl: 'https://34.101.175.155']){
           sh 'kubectl apply -f deployment-config.k8s.yaml'
         }
       }
