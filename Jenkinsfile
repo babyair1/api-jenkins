@@ -20,13 +20,13 @@ pipeline{
     stage ('build docker images'){
       steps{
         script{
-          app = docker.build("yosafatdeny/nodeapp")
+          app = docker.build("sendykris/nodeapp")
         }
       }
     }
     stage ('test image'){
       steps{
-        sh'docker run -d --rm --name testcontainer -p 8081:80 yosafatdeny/nodeapp'
+        sh'docker run -d --rm --name testcontainer -p 8081:80 sendykris/nodeapp'
         input message: "Finished test image?(Click procced to continue"
       }
     }
@@ -38,7 +38,7 @@ pipeline{
     stage ('push image'){
       steps{
         script{
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-yosafatdeny'){
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-sendykris'){
             app.push("${DOCKER_TAG}")
             app.push("latest")
           }
